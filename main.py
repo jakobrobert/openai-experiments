@@ -10,18 +10,6 @@ client = OpenAI(
 )
 
 
-# TODO rename to generate_text
-def send_prompt(prompt):
-    completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user", "content": prompt},
-        ]
-    )
-
-    return completion.choices[0].message.content
-
-
 # TODO Create method to generate motivational quotes. Add params language, tone, verbosity.
 #  Maybe also how well performed in recent days. For the params, add a number to indicate intensity.
 def generate_motivational_quote(language, tone, verbosity):
@@ -46,21 +34,12 @@ def generate_motivational_quote(language, tone, verbosity):
 
 
 if __name__ == "__main__":
-    language = "English"
-    tone = 1
-    verbosity = 2
-    quote = generate_motivational_quote(language, tone, verbosity)
-    print(f"Quote: {quote}")
-
-    # TODO adjust input handling. user should input the different parameters, then show the motivational quote.
-    """
     while True:
-        user_input = input("You: ")
+        print("Please enter the following parameters to generate a motivational quote:")
 
-        
-        if user_input.lower() in ["exit"]:
-            break
+        language = input("Language (e.g. German, English, etc.): ")
+        tone = int(input("Tone (1 - 5): "))
+        verbosity = int(input("Verbosity (1 - 5): "))
 
-        response = send_prompt(user_input)
-        print(f"ChatGPT: {response}")
-    """
+        quote = generate_motivational_quote(language, tone, verbosity)
+        print(f"Quote: {quote}\n")
