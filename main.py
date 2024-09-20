@@ -2,7 +2,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
-load_dotenv(".env")
+load_dotenv("django_project/.env")
 API_KEY = os.getenv("API_KEY")
 
 client = OpenAI(
