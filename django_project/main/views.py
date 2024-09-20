@@ -1,18 +1,31 @@
+from django.shortcuts import render
+from django.views.decorators.http import require_POST
+
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
-load_dotenv(".env")
-API_KEY = os.getenv("API_KEY")
 
-client = OpenAI(
-    api_key=API_KEY
-)
+def index(request):
+    return render(request, 'index.html')
 
 
-# TODO Create method to generate motivational quotes. Add params language, tone, verbosity.
-#  Maybe also how well performed in recent days. For the params, add a number to indicate intensity.
-def generate_motivational_quote(language, tone, verbosity):
+@require_POST
+def generate_quote(request):
+    language = request.POST.get('language')
+    tone = request.POST.get('tone')
+    verbosity = request.POST.get('verbosity')
+
+    load_dotenv(".env")
+    api_key = os.getenv("API_KEY")
+    client = OpenAI(api_key=api_key)
+
+    quote = generate_motivational_quote(client, language, tone, verbosity)
+
+    return render(request, 'index.html', {'quote': quote})
+
+
+def generate_motivational_quote(client, language, tone, verbosity):
     system_prompt = \
         "You are a life coach." \
         "Your task is to generate motivational quotes based on the following parameters: language, tone and verbosity." \
@@ -31,15 +44,3 @@ def generate_motivational_quote(language, tone, verbosity):
     )
 
     return completion.choices[0].message.content
-
-
-if __name__ == "__main__":
-    while True:
-        print("Please enter the following parameters to generate a motivational quote:")
-
-        language = input("Language (e.g. German, English, etc.): ")
-        tone = int(input("Tone (1 - 5): "))
-        verbosity = int(input("Verbosity (1 - 5): "))
-
-        quote = generate_motivational_quote(language, tone, verbosity)
-        print(f"Quote: {quote}\n")
