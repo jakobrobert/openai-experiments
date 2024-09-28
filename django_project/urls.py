@@ -24,6 +24,6 @@ load_dotenv()
 URL_PREFIX = os.getenv('URL_PREFIX', '')
 
 urlpatterns = [
-    path(f'{URL_PREFIX}/admin/', admin.site.urls),
-    path(f'{URL_PREFIX}/main/', include('main.urls')),
+    path(f'{URL_PREFIX}admin/', admin.site.urls),
+    path(f'{URL_PREFIX}main/', include('main.urls')),
 ]
