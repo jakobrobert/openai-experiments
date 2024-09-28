@@ -16,8 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+URL_PREFIX = os.getenv('URL_PREFIX', '')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('main/', include('main.urls')),
+    path(f'{URL_PREFIX}/admin/', admin.site.urls),
+    path(f'{URL_PREFIX}/main/', include('main.urls')),
 ]
