@@ -22,7 +22,12 @@ def generate_quote(request):
 
     quote = generate_motivational_quote(client, language, tone, verbosity)
 
-    return render(request, 'index.html', {'quote': quote})
+    context = {
+        'language': language,
+        'quote': quote
+    }
+
+    return render(request, 'index.html', context)
 
 
 def generate_motivational_quote(client, language, tone, verbosity):

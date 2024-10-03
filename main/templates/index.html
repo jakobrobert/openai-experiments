@@ -9,7 +9,7 @@
         {% csrf_token %}
 
         <label for="language">Enter language:</label>
-        <input type="text" id="language" name="language" required><br><br>
+        <input type="text" id="language" name="language" value="{{ language }}" required><br><br>
 
         <label for="tone">Set tone (1-5):</label>
         <input type="range" id="tone" name="tone" min="1" max="5"><br><br>
