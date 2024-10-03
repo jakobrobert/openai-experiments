@@ -24,6 +24,8 @@ def generate_quote(request):
 
     context = {
         'language': language,
+        'tone': tone,
+        'verbosity': verbosity,
         'quote': quote
     }
 
