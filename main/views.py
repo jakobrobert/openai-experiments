@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from openai import OpenAI
@@ -7,7 +8,19 @@ import os
 
 
 def index(request):
-    return render(request, 'index.html')
+    language = request.GET.get('language', '')
+    tone = request.GET.get('tone', '')
+    verbosity = request.GET.get('verbosity', '')
+    quote = request.GET.get('quote', '')
+
+    context = {
+        'language': language,
+        'tone': tone,
+        'verbosity': verbosity,
+        'quote': quote
+    }
+
+    return render(request, 'index.html', context)
 
 
 @require_POST
@@ -22,7 +35,7 @@ def generate_quote(request):
 
     quote = generate_motivational_quote(client, language, tone, verbosity)
 
-    return render(request, 'index.html', {'quote': quote})
+    return redirect(f"{reverse('index')}?language={language}&tone={tone}&verbosity={verbosity}&quote={quote}")
 
 
 def generate_motivational_quote(client, language, tone, verbosity):
