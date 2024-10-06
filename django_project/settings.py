@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'motivational_quotes',
+    'note_lists',
 ]
 
 MIDDLEWARE = [
