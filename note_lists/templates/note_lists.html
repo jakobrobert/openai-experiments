@@ -9,6 +9,31 @@
 <body>
     <div class="container mt-3">
         <h1 class="text-center">Note Lists</h1>
+
+        <form action="{% url 'add_note_list' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label" for="title" >New Note List Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Note List</button>
+        </form>
+
+        <hr>
+
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- TODO Render actual note lists here -->
+                <tr>
+                    <td>Sample Note List</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- Bootstrap JS -->
