@@ -10,7 +10,18 @@
     <div class="container mt-3">
         <h1 class="text-center">Note List - {{ note_list_title }}</h1>
 
-        <!-- TODO Add form to add note -->
+        <form action="{% url 'add_note' note_list.pk %}" method="post">
+        {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label" for="title">Note Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="text">Note Text</label>
+                <textarea class="form-control" id="text" name="text" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Note</button>
+        </form>
 
         <hr>
 

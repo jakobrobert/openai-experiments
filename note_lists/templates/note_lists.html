@@ -13,7 +13,7 @@
         <form action="{% url 'add_note_list' %}" method="post">
             {% csrf_token %}
             <div class="mb-3">
-                <label class="form-label" for="title" >New Note List Title</label>
+                <label class="form-label" for="title">Note List Title</label>
                 <input type="text" class="form-control" id="title" name="title" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Note List</button>
