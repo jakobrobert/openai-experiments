@@ -24,14 +24,15 @@
         <table class="table mt-4">
             <thead>
                 <tr>
-                    <th scope="col">Title</th>
+                    <th>Title</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- TODO Render actual note lists here -->
-                <tr>
-                    <td>Sample Note List</td>
-                </tr>
+                {% for note_list in note_lists %}
+                    <tr>
+                        <td>{{ note_list.title }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
