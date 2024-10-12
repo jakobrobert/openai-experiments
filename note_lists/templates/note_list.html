@@ -33,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for note in notes %}
+                {% for note in note_list.notes.all %}
                     <tr>
                         <td>{{ note.title }}</td>
                         <td>{{ note.text }}</td>
