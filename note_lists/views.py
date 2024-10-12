@@ -19,7 +19,7 @@ def add_note_list(request):
 def note_list(request, pk):
     note_list = get_object_or_404(NoteList, pk=pk)
     notes = note_list.notes.all()
-    return render(request, 'note_list.html', {'note_list_title': note_list.title, 'notes': notes})
+    return render(request, 'note_list.html', {'note_list': note_list, 'notes': notes})
 
 
 @require_POST
