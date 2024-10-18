@@ -13,7 +13,7 @@
         <h1 class="text-center">Note List - {{ note_list.title }}</h1>
 
         <form action="{% url 'add_note' note_list.id %}" method="post">
-        {% csrf_token %}
+            {% csrf_token %}
             <div class="mb-3">
                 <label class="form-label" for="title">Note Title</label>
                 <input type="text" class="form-control" id="title" name="title" required>
