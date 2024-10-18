@@ -30,7 +30,7 @@
             <tbody>
                 {% for note_list in note_lists %}
                     <tr>
-                        <td><a href="{% url 'note_list' note_list.pk %}">{{ note_list.title }}</a></td>
+                        <td><a href="{% url 'get_note_list' note_list.id %}">{{ note_list.title }}</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
