@@ -30,9 +30,7 @@ def add_note(request, note_list_id):
     return redirect('get_note_list', note_list_id=note_list_id)
 
 
-# TODO pass note_list_id to url
-def delete_note(request, note_id):
+def delete_note(request, note_list_id, note_id):
     note = get_object_or_404(Note, id=note_id)
-    note_list_id = note.note_list.id
     note.delete()
     return redirect('get_note_list', note_list_id=note_list_id)

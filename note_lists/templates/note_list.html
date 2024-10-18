@@ -39,7 +39,7 @@
                         <td>{{ note.title }}</td>
                         <td>{{ note.text }}</td>
                         <!-- TODO Use icon instead -->
-                        <td><a href="{% url 'delete_note' note.id %}">Delete</a></td>
+                        <td><a href="{% url 'delete_note' note_list.id note.id %}">Delete</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
