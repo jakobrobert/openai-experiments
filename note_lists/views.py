@@ -28,3 +28,11 @@ def add_note(request, pk):
     note_list = get_object_or_404(NoteList, pk=pk)
     Note.objects.create(title=title, text=text, note_list=note_list)
     return redirect('note_list', pk=pk)
+
+
+# TODO require delete?
+def delete_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+    note_list_id = note.note_list.id
+    note.delete()
+    return redirect('note_list', pk=note_list_id)

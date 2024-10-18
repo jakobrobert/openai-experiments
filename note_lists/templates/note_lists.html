@@ -30,7 +30,6 @@
             <tbody>
                 {% for note_list in note_lists %}
                     <tr>
-                        <!-- TODO Add link to NoteList view which shows all the notes in a table -->
                         <td><a href="{% url 'note_list' note_list.pk %}">{{ note_list.title }}</a></td>
                     </tr>
                 {% endfor %}
