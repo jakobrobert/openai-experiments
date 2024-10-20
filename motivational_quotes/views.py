@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 
 
-def index(request):
+def motivational_quotes(request):
     language = request.GET.get('language', '')
     tone = request.GET.get('tone', '')
     verbosity = request.GET.get('verbosity', '')
@@ -20,7 +20,7 @@ def index(request):
         'quote': quote
     }
 
-    return render(request, 'index.html', context)
+    return render(request, 'motivational_quotes.html', context)
 
 
 @require_POST
@@ -35,7 +35,7 @@ def generate_quote(request):
 
     quote = generate_motivational_quote(client, language, tone, verbosity)
 
-    return redirect(f"{reverse('index')}?language={language}&tone={tone}&verbosity={verbosity}&quote={quote}")
+    return redirect(f"{reverse('motivational_quotes')}?language={language}&tone={tone}&verbosity={verbosity}&quote={quote}")
 
 
 def generate_motivational_quote(client, language, tone, verbosity):
