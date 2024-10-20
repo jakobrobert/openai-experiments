@@ -39,7 +39,7 @@
                 {% for note in note_list.notes.all %}
                     <tr>
                         <td>{{ note.title }}</td>
-                        <td>{{ note.text }}</td>
+                        <td>{{ note.text | linebreaks }}</td>
                         <td>
                             <a class="text-danger" title="Delete" href="{% url 'delete_note' note_list.id note.id %}">
                                 <i class="fas fa-trash-alt"></i>
