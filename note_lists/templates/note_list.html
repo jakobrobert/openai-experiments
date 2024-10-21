@@ -30,9 +30,16 @@
             <button type="submit" class="btn btn-primary">Generate Report</button>
         </form>
 
+        <div class="mb-3">
+            {% if report %}
+                <h3>Generated Report</h3>
+                <p>{{ report }}</p>
+            {% endif %}
+        </div>
+
         <hr>
 
-        <table class="table mt-3">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Title</th>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from .models import NoteList, Note
@@ -18,7 +19,14 @@ def add_note_list(request):
 
 def get_note_list(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
-    return render(request, 'note_list.html', {'note_list': note_list})
+    report = request.GET.get('report', '')
+
+    context = {
+        'note_list': note_list,
+        'report': report,
+    }
+
+    return render(request, 'note_list.html', context)
 
 
 def delete_note_list(request, note_list_id):
@@ -45,4 +53,5 @@ def delete_note(request, note_list_id, note_id):
 @require_POST
 def generate_report(request, note_list_id):
     # TODO Implement generate_report
-    return redirect('get_note_list', note_list_id=note_list_id)
+    report = "In dieser Woche wurden die Projektziele erfolgreich festgelegt und die ersten Aufgaben abgeschlossen. Das Team arbeitet gut zusammen und ist bereit, die nächste Phase zu starten."
+    return redirect(f"{reverse('get_note_list', args=[note_list_id])}?report={report}")
