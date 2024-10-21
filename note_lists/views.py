@@ -40,3 +40,9 @@ def delete_note(request, note_list_id, note_id):
     note = get_object_or_404(Note, id=note_id)
     note.delete()
     return redirect('get_note_list', note_list_id=note_list_id)
+
+
+@require_POST
+def generate_report(request, note_list_id):
+    # TODO Implement generate_report
+    return redirect('get_note_list', note_list_id=note_list_id)

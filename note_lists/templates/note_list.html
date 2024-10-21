@@ -25,6 +25,11 @@
             <button type="submit" class="btn btn-primary">Add Note</button>
         </form>
 
+        <form action="{% url 'generate_report' note_list.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Generate Report</button>
+        </form>
+
         <hr>
 
         <table class="table mt-4">
