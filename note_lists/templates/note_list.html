@@ -12,33 +12,37 @@
     <div class="container mt-3">
         <h1 class="text-center">Note List - {{ note_list.title }}</h1>
 
+        <h3>Add Note</h3>
         <form action="{% url 'add_note' note_list.id %}" method="post" class="mb-3">
             {% csrf_token %}
             <div class="mb-3">
-                <label class="form-label" for="title">Note Title</label>
+                <label class="form-label" for="title">Title</label>
                 <input type="text" class="form-control" id="title" name="title" required>
             </div>
             <div class="mb-3">
-                <label class="form-label" for="text">Note Text</label>
+                <label class="form-label" for="text">Text</label>
                 <textarea class="form-control" id="text" name="text" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Add Note</button>
+            <button type="submit" class="btn btn-primary">Add</button>
         </form>
 
+        <hr>
+
+        <h3>Generate Report</h3>
         <form action="{% url 'generate_report' note_list.id %}" method="post" class="mb-3">
             {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Generate Report</button>
+            <button type="submit" class="btn btn-primary">Generate</button>
         </form>
 
         <div class="mb-3">
             {% if report %}
-                <h3>Generated Report</h3>
                 <p>{{ report }}</p>
             {% endif %}
         </div>
 
         <hr>
 
+        <h3>Notes</h3>
         <table class="table">
             <thead>
                 <tr>
