@@ -12,7 +12,7 @@
     <div class="container mt-3">
         <h1 class="text-center">Note List - {{ note_list.title }}</h1>
 
-        <form action="{% url 'add_note' note_list.id %}" method="post">
+        <form action="{% url 'add_note' note_list.id %}" method="post" class="mb-3">
             {% csrf_token %}
             <div class="mb-3">
                 <label class="form-label" for="title">Note Title</label>
@@ -25,16 +25,14 @@
             <button type="submit" class="btn btn-primary">Add Note</button>
         </form>
 
-        <div class="mt-3"></div>
-
-        <form action="{% url 'generate_report' note_list.id %}" method="post">
+        <form action="{% url 'generate_report' note_list.id %}" method="post" class="mb-3">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary">Generate Report</button>
         </form>
 
         <hr>
 
-        <table class="table mt-4">
+        <table class="table mt-3">
             <thead>
                 <tr>
                     <th>Title</th>
