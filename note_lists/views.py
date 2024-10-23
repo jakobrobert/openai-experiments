@@ -68,8 +68,8 @@ def generate_report_using_openai(note_list):
 
     system_prompt = \
         'Generate a well-structured and concise report based on the provided notes.' \
-        'It is very important that the report is in the same language as the notes.' \
-        'The report should NOT contain the notes itself but should summarize the main points.'\
+        'Detect the language used in the notes and use the same language for the report.' \
+        'The report should NOT contain the notes itself but should summarize the main points and give a conclusion.'\
         'You will receive the following parameters:' \
         '- note_list_title' \
         '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)'
