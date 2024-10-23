@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
+
 from .models import NoteList, Note
 
 
@@ -52,6 +56,34 @@ def delete_note(request, note_list_id, note_id):
 
 @require_POST
 def generate_report(request, note_list_id):
-    # TODO Implement generate_report
-    report = "In dieser Woche wurden die Projektziele erfolgreich festgelegt und die ersten Aufgaben abgeschlossen. Das Team arbeitet gut zusammen und ist bereit, die nächste Phase zu starten."
+    note_list = get_object_or_404(NoteList, id=note_list_id)
+    report = generate_report_using_openai(note_list)
     return redirect(f"{reverse('get_note_list', args=[note_list_id])}?report={report}")
+
+
+def generate_report_using_openai(note_list):
+    load_dotenv(".env")
+    api_key = os.getenv("API_KEY")
+    client = OpenAI(api_key=api_key)
+
+    system_prompt = \
+        'Generate a well-structured report based on the provided notes.' \
+        'The report should be in the same language as the notes.' \
+        'You will receive the following parameters:' \
+        '- note_list_title' \
+        '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)'
+
+    notes = note_list.notes.all()
+    notes_text = ",".join([f"(title: {note.title}, text: {note.text})" for note in notes])
+
+    user_prompt = f"Generate a report. note_list_title: {note_list.title}, notes_text: {notes_text}"
+
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+    )
+
+    return completion.choices[0].message.content
