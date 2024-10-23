@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from urllib.parse import quote
 
 from .models import NoteList, Note
 
@@ -58,7 +59,8 @@ def delete_note(request, note_list_id, note_id):
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
     report = generate_report_using_openai(note_list)
-    return redirect(f"{reverse('get_note_list', args=[note_list_id])}?report={report}")
+    encoded_report = quote(report)
+    return redirect(f"{reverse('get_note_list', args=[note_list_id])}?report={encoded_report}")
 
 
 def generate_report_using_openai(note_list):
