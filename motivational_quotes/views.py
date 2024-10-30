@@ -35,18 +35,18 @@ def generate_quote(request):
 
 
 def generate_quote_using_openai(language, tone, verbosity):
-    load_dotenv(".env")
-    api_key = os.getenv("API_KEY")
-    client = OpenAI(api_key=api_key)
-
     system_prompt = \
         "You are a life coach." \
         "Your task is to generate motivational quotes based on the following parameters: language, tone and verbosity." \
-        "The language can have e.g. following values: English, German, etc."\
+        "The language can have e.g. following values: English, German, etc." \
         "The tone ranges from 1 (very aggressive and insulting) to 5 (very polite, careful and empathetic)." \
         "The verbosity ranges from 1 (very brief) to 5 (very detailed)."
 
     user_prompt = f"Generate a motivational quote. language: {language}, tone: {tone}, verbosity: {verbosity}"
+
+    load_dotenv(".env")
+    api_key = os.getenv("API_KEY")
+    client = OpenAI(api_key=api_key)
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",

@@ -64,10 +64,6 @@ def generate_report(request, note_list_id):
 
 
 def generate_report_using_openai(note_list):
-    load_dotenv(".env")
-    api_key = os.getenv("API_KEY")
-    client = OpenAI(api_key=api_key)
-
     system_prompt = \
         'Generate a well-structured and concise report based on the provided notes.' \
         'Detect the language used in the notes and use the same language for the report.' \
@@ -80,6 +76,10 @@ def generate_report_using_openai(note_list):
     notes_text = ",".join([f"(title: {note.title}, text: {note.text})" for note in notes])
 
     user_prompt = f"Generate a report. note_list_title: {note_list.title}, notes_text: {notes_text}"
+
+    load_dotenv(".env")
+    api_key = os.getenv("API_KEY")
+    client = OpenAI(api_key=api_key)
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
