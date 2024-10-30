@@ -2,11 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
 from urllib.parse import quote
 
+from utils import generate_openai_text
 from .models import NoteList, Note
 
 
@@ -78,19 +76,3 @@ def generate_report_using_openai(note_list):
     user_prompt = f"Generate a report. note_list_title: {note_list.title}, notes_text: {notes_text}"
 
     return generate_openai_text(system_prompt, user_prompt)
-
-
-def generate_openai_text(system_prompt, user_prompt):
-    load_dotenv(".env")
-    api_key = os.getenv("API_KEY")
-    client = OpenAI(api_key=api_key)
-
-    completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ]
-    )
-
-    return completion.choices[0].message.content
