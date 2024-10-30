@@ -33,12 +33,12 @@ def generate_quote(request):
     api_key = os.getenv("API_KEY")
     client = OpenAI(api_key=api_key)
 
-    quote = generate_motivational_quote(client, language, tone, verbosity)
+    quote = generate_quote_using_openai(client, language, tone, verbosity)
 
     return redirect(f"{reverse('motivational_quotes')}?language={language}&tone={tone}&verbosity={verbosity}&quote={quote}")
 
 
-def generate_motivational_quote(client, language, tone, verbosity):
+def generate_quote_using_openai(client, language, tone, verbosity):
     system_prompt = \
         "You are a life coach." \
         "Your task is to generate motivational quotes based on the following parameters: language, tone and verbosity." \
