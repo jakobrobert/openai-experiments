@@ -44,6 +44,10 @@ def generate_quote_using_openai(language, tone, verbosity):
 
     user_prompt = f"Generate a motivational quote. language: {language}, tone: {tone}, verbosity: {verbosity}"
 
+    return generate_openai_text(system_prompt, user_prompt)
+
+
+def generate_openai_text(system_prompt, user_prompt):
     load_dotenv(".env")
     api_key = os.getenv("API_KEY")
     client = OpenAI(api_key=api_key)

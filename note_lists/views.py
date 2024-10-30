@@ -77,6 +77,10 @@ def generate_report_using_openai(note_list):
 
     user_prompt = f"Generate a report. note_list_title: {note_list.title}, notes_text: {notes_text}"
 
+    return generate_openai_text(system_prompt, user_prompt)
+
+
+def generate_openai_text(system_prompt, user_prompt):
     load_dotenv(".env")
     api_key = os.getenv("API_KEY")
     client = OpenAI(api_key=api_key)
