@@ -4,7 +4,7 @@ from django.views.decorators.http import require_POST
 
 from urllib.parse import quote
 
-from utils import generate_openai_text
+from openai_utils import generate_openai_text
 from .models import NoteList, Note
 
 

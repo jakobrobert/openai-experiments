@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
-from utils import generate_openai_text
+from openai_utils import generate_openai_text
 
 
 def motivational_quotes(request):

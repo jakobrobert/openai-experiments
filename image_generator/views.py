@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
-from utils import generate_openai_image
+from openai_utils import generate_openai_image
 
 
 def image_generator(request):
