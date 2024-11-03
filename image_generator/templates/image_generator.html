@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}AI Life Coach - Image Generator{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Image Generator</h1>
+
+    <form action="{% url 'generate_image' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label" for="prompt">Prompt</label>
+            <textarea class="form-control" id="prompt" name="prompt" required>{{ prompt }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Generate Image</button>
+    </form>
+
+    {% if image_url %}
+        <h3 class="mt-4">Generated Image</h3>
+
+        <div>
+            <p>{{ revised_prompt }}</p>
+            <img class="img-fluid" src="{{ image_url }}" alt="Failed to display image">
+        </div>
+    {% endif %}
+{% endblock %}
