@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'motivational_quotes',
     'note_lists',
+    'image_generator',
 ]
 
 MIDDLEWARE = [
