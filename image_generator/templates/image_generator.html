@@ -10,9 +10,18 @@
 
         <div class="mb-3">
             <label class="form-label" for="prompt">Prompt</label>
-            <textarea class="form-control" id="prompt" name="prompt" required></textarea>
+            <textarea class="form-control" id="prompt" name="prompt" required>{{ prompt }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Generate</button>
+        <button type="submit" class="btn btn-primary">Generate Image</button>
     </form>
+
+    {% if image_url %}
+        <h3 class="mt-4">Generated Image</h3>
+
+        <div>
+            <img class="img-fluid" src="{{ image_url }}" alt="Failed to display image">
+            <p>{{ revised_prompt }}</p>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -6,10 +6,12 @@ from utils import generate_openai_image
 
 
 def image_generator(request):
+    prompt = request.GET.get('prompt', '')
     revised_prompt = request.GET.get('revised_prompt', '')
     image_url = request.GET.get('image_url', '')
 
     context = {
+        'prompt': prompt,
         'revised_prompt': revised_prompt,
         'image_url': image_url
     }
@@ -23,4 +25,4 @@ def generate_image(request):
 
     image = generate_openai_image(prompt)
 
-    return redirect(f"{reverse('image_generator')}?revised_prompt={image.revised_prompt}&image_url={image.url}")
+    return redirect(f"{reverse('image_generator')}?prompt={prompt}&revised_prompt={image.revised_prompt}&image_url={image.url}")
