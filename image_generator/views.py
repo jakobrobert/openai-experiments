@@ -1,12 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from utils import generate_openai_image
 
 
 def image_generator(request):
-    # TODO Get params & send to template by context
-    return render(request, 'image_generator.html')
+    revised_prompt = request.GET.get('revised_prompt', '')
+    image_url = request.GET.get('image_url', '')
+
+    context = {
+        'revised_prompt': revised_prompt,
+        'image_url': image_url
+    }
+
+    return render(request, 'image_generator.html', context)
 
 
 @require_POST
@@ -15,7 +23,4 @@ def generate_image(request):
 
     image = generate_openai_image(prompt)
 
-    print(f'revised_prompt: {image.revised_prompt}')
-    print(f'url: {image.url}')
-
-    return None
+    return redirect(f"{reverse('image_generator')}?revised_prompt={image.revised_prompt}&image_url={image.url}")
