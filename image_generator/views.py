@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from utils import generate_openai_image
 
 
 def image_generator(request):
-    prompt = request.GET.get('prompt', '')
-    revised_prompt = request.GET.get('revised_prompt', '')
-    image_url = request.GET.get('image_url', '')
+    prompt = request.session.get('prompt', '')
+    revised_prompt = request.session.get('revised_prompt', '')
+    image_url = request.session.get('image_url', '')
 
     context = {
         'prompt': prompt,
@@ -25,4 +24,8 @@ def generate_image(request):
 
     image = generate_openai_image(prompt)
 
-    return redirect(f"{reverse('image_generator')}?prompt={prompt}&revised_prompt={image.revised_prompt}&image_url={image.url}")
+    request.session['prompt'] = prompt
+    request.session['revised_prompt'] = image.revised_prompt
+    request.session['image_url'] = image.url
+
+    return redirect('image_generator')
