@@ -19,11 +19,9 @@
     {% if image_url %}
         <h3 class="mt-4">Generated Image</h3>
 
-        <p>image_url: {{ image_url }}</p>
-
         <div>
-            <img class="img-fluid" src="{{ image_url }}" alt="Failed to display image">
             <p>{{ revised_prompt }}</p>
+            <img class="img-fluid" src="{{ image_url }}" alt="Failed to display image">
         </div>
     {% endif %}
 {% endblock %}
