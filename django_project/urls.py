@@ -27,4 +27,5 @@ urlpatterns = [
     path(f'{URL_PREFIX}admin/', admin.site.urls),
     path(f'{URL_PREFIX}motivational-quotes/', include('motivational_quotes.urls')),
     path(f'{URL_PREFIX}note-lists/', include('note_lists.urls')),
+    path(f'{URL_PREFIX}image-generator/', include('image_generator.urls')),
 ]
