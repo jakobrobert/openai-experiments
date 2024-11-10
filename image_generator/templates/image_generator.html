@@ -20,8 +20,14 @@
         <h3 class="mt-4">Generated Image</h3>
 
         <div>
-            <p>{{ revised_prompt }}</p>
+            <p>Revised Prompt: {{ revised_prompt }}</p>
             <img class="img-fluid" src="{{ image_url }}" alt="Failed to display image">
+        </div>
+    {% elif error_message %}
+        <h3 class="mt-4">Generated Image</h3>
+
+        <div class="alert alert-danger">
+            Failed to generate image: {{ error_message }}
         </div>
     {% endif %}
 {% endblock %}
