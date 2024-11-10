@@ -22,16 +22,14 @@ def image_generator(request):
 def generate_image(request):
     prompt = request.POST.get('prompt')
 
-    result = generate_openai_image(prompt)
-    # TODO Refactor so function returns tuple instead of dict
-    image = result['image']
+    image, error_message = generate_openai_image(prompt)
 
     if image:
         request.session['prompt'] = prompt
         request.session['revised_prompt'] = image.revised_prompt
         request.session['image_url'] = image.url
     else:
-        request.session['error_message'] = result['error_message']
-        print(result['error_message'])
+        request.session['error_message'] = error_message
+        print(error_message)
 
     return redirect('image_generator')

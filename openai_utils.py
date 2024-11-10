@@ -34,8 +34,8 @@ def generate_openai_image(prompt):
             response_format='url'
         )
 
-        return {'image': images.data[0], 'error_message': None}
+        return images.data[0], None
     except openai.BadRequestError as e:
-        return {'image': None, 'error_message': e.message}
+        return None, e.message
     except Exception:
-        return {'image': None, 'error_message': 'Unknown error'}
+        return None, 'Unknown error'
