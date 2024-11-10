@@ -32,5 +32,6 @@ def generate_image(request):
         request.session['image_url'] = image.url
     else:
         request.session['error_message'] = result['error_message']
+        print(result['error_message'])
 
     return redirect('image_generator')
