@@ -23,16 +23,15 @@ def image_generator(request):
 @require_POST
 def generate_image(request):
     prompt = request.POST.get('prompt')
+    request.session['prompt'] = prompt
 
     image, error_message = generate_openai_image(prompt)
 
     if image:
-        request.session['prompt'] = prompt
         request.session['revised_prompt'] = image.revised_prompt
         request.session['image_url'] = image.url
         request.session['error_message'] = None
     else:
-        request.session['prompt'] = prompt
         request.session['revised_prompt'] = None
         request.session['image_url'] = None
         request.session['error_message'] = error_message
