@@ -32,7 +32,7 @@ def generate_image(request):
         request.session['image_url'] = image.url
         request.session['error_message'] = None
     else:
-        request.session['prompt'] = None
+        request.session['prompt'] = prompt
         request.session['revised_prompt'] = None
         request.session['image_url'] = None
         request.session['error_message'] = error_message
