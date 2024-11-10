@@ -1,8 +1,8 @@
+import openai
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
-# TODO rename this file to openai_utils
 
 def generate_openai_text(system_prompt, user_prompt):
     load_dotenv(".env")
@@ -25,12 +25,15 @@ def generate_openai_image(prompt):
     api_key = os.getenv("API_KEY")
     client = OpenAI(api_key=api_key)
 
-    images = client.images.generate(
-        model='dall-e-3',
-        prompt=prompt,
-        n=1,
-        size='1024x1024',
-        response_format='url'
-    )
+    try:
+        images = client.images.generate(
+            model='dall-e-3',
+            prompt=prompt,
+            n=1,
+            size='1024x1024',
+            response_format='url'
+        )
 
-    return images.data[0]
+        return {'image': images.data[0], 'error_message': None}
+    except openai.BadRequestError as e:
+        return {'image': None, 'error_message': e.message}
