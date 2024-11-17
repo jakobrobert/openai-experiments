@@ -26,12 +26,18 @@ def generate_quote(request):
     tone = request.POST.get('tone')
     verbosity = request.POST.get('verbosity')
 
-    quote = generate_quote_using_openai(language, tone, verbosity)
-
     request.session['language'] = language
     request.session['tone'] = tone
     request.session['verbosity'] = verbosity
-    request.session['quote'] = quote
+
+    quote, error_message = generate_quote_using_openai(language, tone, verbosity)
+
+    if quote:
+        request.session['quote'] = quote
+        request.session['error_message'] = None
+    else:
+        request.session['quote'] = None
+        request.session['error_message'] = error_message
 
     return redirect('motivational_quotes')
 

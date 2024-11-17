@@ -9,15 +9,20 @@ def generate_openai_text(system_prompt, user_prompt):
     api_key = os.getenv("API_KEY")
     client = OpenAI(api_key=api_key)
 
-    completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ]
-    )
+    try:
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ]
+        )
 
-    return completion.choices[0].message.content
+        return completion.choices[0].message.content, None
+    except openai.BadRequestError as e:
+        return None, e.body['message']
+    except Exception:
+        return None, 'Unknown error'
 
 
 def generate_openai_image(prompt):
