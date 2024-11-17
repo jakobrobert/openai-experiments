@@ -1,8 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 from django.views.decorators.http import require_POST
-
-from urllib.parse import quote
 
 from openai_utils import generate_openai_text
 from .models import NoteList, Note
@@ -22,7 +19,7 @@ def add_note_list(request):
 
 def get_note_list(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
-    report = request.GET.get('report', '')
+    report = request.session.get('report', '')
 
     context = {
         'note_list': note_list,
@@ -57,8 +54,8 @@ def delete_note(request, note_list_id, note_id):
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
     report = generate_report_using_openai(note_list)
-    encoded_report = quote(report)
-    return redirect(f"{reverse('get_note_list', args=[note_list_id])}?report={encoded_report}")
+    request.session['report'] = report
+    return redirect('get_note_list', note_list_id=note_list_id)
 
 
 def generate_report_using_openai(note_list):

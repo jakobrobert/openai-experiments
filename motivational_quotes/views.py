@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from openai_utils import generate_openai_text
 
 
 def motivational_quotes(request):
-    language = request.GET.get('language', '')
-    tone = request.GET.get('tone', '')
-    verbosity = request.GET.get('verbosity', '')
-    quote = request.GET.get('quote', '')
+    language = request.session.get('language', '')
+    tone = request.session.get('tone', '')
+    verbosity = request.session.get('verbosity', '')
+    quote = request.session.get('quote', '')
 
     context = {
         'language': language,
@@ -29,7 +28,12 @@ def generate_quote(request):
 
     quote = generate_quote_using_openai(language, tone, verbosity)
 
-    return redirect(f"{reverse('motivational_quotes')}?language={language}&tone={tone}&verbosity={verbosity}&quote={quote}")
+    request.session['language'] = language
+    request.session['tone'] = tone
+    request.session['verbosity'] = verbosity
+    request.session['quote'] = quote
+
+    return redirect('motivational_quotes')
 
 
 def generate_quote_using_openai(language, tone, verbosity):
