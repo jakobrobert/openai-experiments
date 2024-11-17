@@ -9,12 +9,14 @@ def motivational_quotes(request):
     tone = request.session.get('tone', '')
     verbosity = request.session.get('verbosity', '')
     quote = request.session.get('quote', '')
+    error_message = request.session.get('error_message', '')
 
     context = {
         'language': language,
         'tone': tone,
         'verbosity': verbosity,
-        'quote': quote
+        'quote': quote,
+        'error_message': error_message
     }
 
     return render(request, 'motivational_quotes.html', context)
