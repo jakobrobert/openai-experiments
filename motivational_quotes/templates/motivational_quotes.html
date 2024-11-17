@@ -29,5 +29,10 @@
     {% if quote %}
         <h3 class="mt-4">Generated Quote</h3>
         <p>{{ quote }}</p>
+    {% elif error_message %}
+        <h3 class="mt-4">Generated Quote</h3>
+        <div class="alert alert-danger">
+            Failed to generate quote: {{ error_message }}
+        </div>
     {% endif %}
 {% endblock %}
