@@ -19,11 +19,14 @@ def add_note_list(request):
 
 def get_note_list(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
+
     report = request.session.get('report', '')
+    error_message = request.session.get('error_message', '')
 
     context = {
         'note_list': note_list,
         'report': report,
+        'error_message': error_message
     }
 
     return render(request, 'note_list.html', context)
@@ -53,8 +56,16 @@ def delete_note(request, note_list_id, note_id):
 @require_POST
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
-    report = generate_report_using_openai(note_list)
-    request.session['report'] = report
+
+    report, error_message = generate_report_using_openai(note_list)
+
+    if report:
+        request.session['report'] = report
+        request.session['error_message'] = None
+    else:
+        request.session['report'] = None
+        request.session['error_message'] = error_message
+
     return redirect('get_note_list', note_list_id=note_list_id)
 
 

@@ -32,11 +32,15 @@
         <button type="submit" class="btn btn-primary">Generate</button>
     </form>
 
-    <div class="mb-3">
-        {% if report %}
+    {% if report %}
+        <div class="mb-3">
             <p>{{ report }}</p>
-        {% endif %}
-    </div>
+        </div>
+    {% elif error_message %}
+        <div class="mb-3 alert alert-danger">
+            Failed to generate report: {{ error_message }}
+        </div>
+    {% endif %}
 
     <hr>
 
