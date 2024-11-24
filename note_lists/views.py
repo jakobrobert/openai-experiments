@@ -54,6 +54,16 @@ def delete_note(request, note_list_id, note_id):
 
 
 @require_POST
+def generate_notes(request, note_list_id):
+    print(f'note_list_id: {note_list_id}')
+    description = request.POST.get('description')
+    num_notes = request.POST.get('num_notes')
+    print(f'description: {description}')
+    print(f'num_notes: {num_notes}')
+    return redirect('get_note_list', note_list_id=note_list_id)
+
+
+@require_POST
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
 

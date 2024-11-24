@@ -15,13 +15,29 @@
         {% csrf_token %}
         <div class="mb-3">
             <label class="form-label" for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <input class="form-control" type="text" id="title" name="title" required>
         </div>
         <div class="mb-3">
             <label class="form-label" for="text">Text</label>
             <textarea class="form-control" id="text" name="text" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+    <hr>
+
+    <h3>Generate Notes</h3>
+    <form action="{% url 'generate_notes' note_list.id %}" method="post" class="mb-3">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="text" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="num_notes">Number of Notes</label>
+            <input class="form-control" type="number" id="num_notes" name="num_notes" min="1" value="1" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate</button>
     </form>
 
     <hr>
