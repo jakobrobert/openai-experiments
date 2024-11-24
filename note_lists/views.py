@@ -61,7 +61,7 @@ def generate_notes(request, note_list_id):
 
     notes_json, error_message = generate_notes_json_using_openai(note_list.title, description, num_notes)
     # TODO create notes objects from json, store into database
-    print(f'notes_json: {notes_json}')
+    print(f'{notes_json}')
 
     if error_message:
         request.session['error_message'] = error_message
@@ -105,12 +105,13 @@ def generate_report_using_openai(note_list):
 
 def generate_notes_json_using_openai(note_list_title, description, num_notes):
     system_prompt = (
-        'You are a helpful assistant that generates notes based on the given parameters.\n'
-        'The response should be in JSON format, where each note is an object with title and text.\n'
+        'Generates notes based on the given parameters.\n'
+        'Each note is an object with title and text.\n'
+        'The response must be a raw JSON array containing the notes, without any wrapping object.\n'
         'The parameters you will receive are:\n'
         '- note_list_title: The title of the note list\n'
         '- description: A description to guide the content of the notes\n'
-        '- num_notes: The number of notes to generate\n'
+        '- num_notes: The number of notes to generate'
     )
 
     user_prompt = (
