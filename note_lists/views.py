@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
@@ -59,12 +61,17 @@ def generate_notes(request, note_list_id):
     description = request.POST.get('description')
     num_notes = request.POST.get('num_notes')
 
-    notes_json, error_message = generate_notes_json_using_openai(note_list.title, description, num_notes)
-    # TODO create notes objects from json, store into database
-    print(f'{notes_json}')
+    notes_json_str, error_message = generate_notes_json_using_openai(note_list.title, description, num_notes)
 
     if error_message:
         request.session['error_message'] = error_message
+    else:
+        notes_json = json.loads(notes_json_str)
+
+        for note_json in notes_json:
+            title = note_json['title']
+            text = note_json['text']
+            Note.objects.create(title=title, text=text, note_list=note_list)
 
     return redirect('get_note_list', note_list_id=note_list_id)
 
