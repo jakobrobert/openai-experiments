@@ -89,14 +89,14 @@ def generate_report(request, note_list_id):
 
 
 def generate_report_using_openai(note_list):
-    # TODO add line breaks here as well
-    system_prompt = \
-        'Generate a well-structured and concise report based on the provided notes.' \
-        'Detect the language used in the notes and use the same language for the report.' \
-        'The report should NOT contain the notes itself but should summarize the main points and give a conclusion.'\
-        'You will receive the following parameters:' \
-        '- note_list_title' \
-        '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)'
+    system_prompt = (
+        'Generate a well-structured and concise report based on the provided notes.\n'
+        'Detect the language used in the notes and use the same language for the report.\n'
+        'The report should NOT contain the notes itself but should summarize the main points and give a conclusion.\n'
+        'You will receive the following parameters:\n'
+        '- note_list_title\n'
+        '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)\n'
+    )
 
     notes = note_list.notes.all()
     notes_text = ','.join([f'(title: {note.title}, text: {note.text})' for note in notes])
@@ -114,12 +114,12 @@ def generate_notes_json_using_openai(note_list_title, description, num_notes):
         'The parameters you will receive are:\n'
         '- note_list_title: The title of the note list\n'
         '- description: A description to guide the content of the notes\n'
-        '- num_notes: The number of notes to generate'
+        '- num_notes: The number of notes to generate\n'
     )
 
     user_prompt = (
         'Generate the notes.\n'
-        f'note_list_title: {note_list_title}, description: {description}, num_notes: {num_notes}'
+        f'note_list_title: {note_list_title}, description: {description}, num_notes: {num_notes}\n'
     )
 
     return generate_openai_text(system_prompt, user_prompt)
