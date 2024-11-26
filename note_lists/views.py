@@ -55,6 +55,12 @@ def delete_note(request, note_list_id, note_id):
     return redirect('get_note_list', note_list_id=note_list_id)
 
 
+def clear_notes(request, note_list_id):
+    note_list = get_object_or_404(NoteList, id=note_list_id)
+    note_list.notes.all().delete()
+    return redirect('get_note_list', note_list_id=note_list_id)
+
+
 @require_POST
 def generate_notes(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
