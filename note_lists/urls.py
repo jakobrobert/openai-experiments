@@ -9,5 +9,7 @@ urlpatterns = [
     path('<int:note_list_id>/delete/', views.delete_note_list, name='delete_note_list'),
     path('<int:note_list_id>/notes/add/', views.add_note, name='add_note'),
     path('<int:note_list_id>/notes/<int:note_id>/delete/', views.delete_note, name='delete_note'),
+    path('<int:note_list_id>/notes/clear/', views.clear_notes, name='clear_notes'),
+    path('<int:note_list_id>/generate-notes/', views.generate_notes, name='generate_notes'),
     path('<int:note_list_id>/generate-report/', views.generate_report, name='generate_report'),
 ]
