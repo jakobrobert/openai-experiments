@@ -67,11 +67,12 @@ def generate_notes(request, note_list_id):
         request.session['error_message'] = error_message
     else:
         notes_json = json.loads(notes_json_str)
+        notes = []
 
         for note_json in notes_json:
-            title = note_json['title']
-            text = note_json['text']
-            Note.objects.create(title=title, text=text, note_list=note_list)
+            notes.append(Note(title=note_json['title'], text=note_json['text'], note_list=note_list))
+
+        Note.objects.bulk_create(notes)
 
     return redirect('get_note_list', note_list_id=note_list_id)
 
