@@ -66,13 +66,8 @@ def generate_notes(request, note_list_id):
     if error_message:
         request.session['error_message'] = error_message
     else:
-        notes_json = json.loads(notes_json_str)
-        notes = []
-
-        for note_json in notes_json:
-            notes.append(Note(title=note_json['title'], text=note_json['text'], note_list=note_list))
-
-        Note.objects.bulk_create(notes)
+        notes_data = json.loads(notes_json_str)
+        save_notes_to_database(notes_data, note_list)
 
     return redirect('get_note_list', note_list_id=note_list_id)
 
@@ -128,3 +123,12 @@ def generate_notes_json_using_openai(note_list_title, description, num_notes):
     )
 
     return generate_openai_text(system_prompt, user_prompt)
+
+
+def save_notes_to_database(notes_data, note_list):
+    notes = []
+
+    for note_data in notes_data:
+        notes.append(Note(title=note_data['title'], text=note_data['text'], note_list=note_list))
+
+    Note.objects.bulk_create(notes)
