@@ -31,11 +31,12 @@
         {% csrf_token %}
         <div class="mb-3">
             <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" required></textarea>
+            <textarea class="form-control" id="description" name="description" required>{{ generate_notes_description }}</textarea>
         </div>
         <div class="mb-3">
             <label class="form-label" for="num_notes">Number of Notes</label>
-            <input class="form-control" type="number" id="num_notes" name="num_notes" min="1" value="1" required>
+            <input class="form-control" type="number" id="num_notes" name="num_notes"
+                   min="1" value="{{ generate_notes_num_notes|default:1 }}" required>
         </div>
         <button type="submit" class="btn btn-primary">Generate</button>
     </form>

@@ -22,11 +22,15 @@ def add_note_list(request):
 def get_note_list(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
 
+    generate_notes_description = request.session.get('generate_notes_description', '')
+    generate_notes_num_notes = request.session.get('generate_notes_num_notes', '1')
     report = request.session.pop('report', '')
     error_message = request.session.pop('error_message', '')
 
     context = {
         'note_list': note_list,
+        'generate_notes_description': generate_notes_description,
+        'generate_notes_num_notes': generate_notes_num_notes,
         'report': report,
         'error_message': error_message
     }
@@ -66,6 +70,9 @@ def generate_notes(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
     description = request.POST.get('description')
     num_notes = request.POST.get('num_notes')
+
+    request.session['generate_notes_description'] = description
+    request.session['generate_notes_num_notes'] = num_notes
 
     notes_json_str, error_message = generate_notes_json_using_openai(note_list.title, description, num_notes)
 
