@@ -6,9 +6,9 @@ from openai_utils import generate_openai_image
 
 def image_generator(request):
     prompt = request.session.get('prompt', '')
-    revised_prompt = request.session.get('revised_prompt', '')
-    image_url = request.session.get('image_url', '')
-    error_message = request.session.get('error_message', '')
+    revised_prompt = request.session.pop('revised_prompt', '')
+    image_url = request.session.pop('image_url', '')
+    error_message = request.session.pop('error_message', '')
 
     context = {
         'prompt': prompt,
