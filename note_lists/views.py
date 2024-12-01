@@ -22,8 +22,8 @@ def add_note_list(request):
 def get_note_list(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
 
-    report = request.session.get('report', '')
-    error_message = request.session.get('error_message', '')
+    report = request.session.pop('report', '')
+    error_message = request.session.pop('error_message', '')
 
     context = {
         'note_list': note_list,
