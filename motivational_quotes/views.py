@@ -8,8 +8,8 @@ def motivational_quotes(request):
     language = request.session.get('language', '')
     tone = request.session.get('tone', '')
     verbosity = request.session.get('verbosity', '')
-    quote = request.session.get('quote', '')
-    error_message = request.session.get('error_message', '')
+    quote = request.session.pop('quote', '')
+    error_message = request.session.pop('error_message', '')
 
     context = {
         'language': language,
