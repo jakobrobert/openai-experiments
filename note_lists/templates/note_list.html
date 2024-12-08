@@ -51,7 +51,7 @@
 
     {% if report %}
         <div class="mb-3">
-            <p>{{ report }}</p>
+            {{ report | safe }}
         </div>
     {% elif error_message %}
         <div class="mb-3 alert alert-danger">
