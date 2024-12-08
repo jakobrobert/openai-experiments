@@ -104,6 +104,7 @@ def generate_report(request, note_list_id):
 def generate_report_using_openai(note_list):
     system_prompt = (
         'Generate a well-structured and concise report based on the provided notes.\n'
+        'The output should be in HTML format and only include the main content, NO h-tags'
         'Detect the language used in the notes and use the same language for the report.\n'
         'The report should NOT contain the notes itself but should summarize the main points and give a conclusion.\n'
         'You will receive the following parameters:\n'
