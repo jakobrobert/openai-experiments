@@ -115,7 +115,6 @@ def generate_report_using_openai(note_list, language):
         'Do NOT include the note list title. '
         'The output should be in HTML format and should only include the actual content. '
         'It should be well structured, e.g. it might provide several paragraphs and bold text, but NO headings. '
-        'Detect the language used in the notes and use the same language for the report.\n'
         'You will receive the following parameters:\n'
         '- language: e.g. German, English, etc.\n'
         '- note_list_title\n'
