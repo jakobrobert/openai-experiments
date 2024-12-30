@@ -50,6 +50,10 @@
             <label class="form-label" for="report_language">Enter language:</label>
             <input type="text" class="form-control" id="report_language" name="report_language" value="{{ report_language }}" required>
         </div>
+        <div class="mb-3">
+            <label class="form-label" for="report_structure_level">Set structure level (1-5):</label>
+            <input type="range" class="form-range" id="report_structure_level" name="report_structure_level" min="1" max="5" value="{{ report_structure_level }}">
+        </div>
         <button type="submit" class="btn btn-primary">Generate</button>
     </form>
 

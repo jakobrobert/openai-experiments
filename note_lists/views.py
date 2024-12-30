@@ -25,6 +25,7 @@ def get_note_list(request, note_list_id):
     generate_notes_description = request.session.get('generate_notes_description', '')
     generate_notes_num_notes = request.session.get('generate_notes_num_notes', '1')
     report_language = request.session.get('report_language', '')
+    report_structure_level = request.session.get('report_structure_level', '')
     report = request.session.pop('report', '')
     error_message = request.session.pop('error_message', '')
 
@@ -33,6 +34,7 @@ def get_note_list(request, note_list_id):
         'generate_notes_description': generate_notes_description,
         'generate_notes_num_notes': generate_notes_num_notes,
         'report_language': report_language,
+        'report_structure_level': report_structure_level,
         'report': report,
         'error_message': error_message
     }
@@ -91,10 +93,12 @@ def generate_notes(request, note_list_id):
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
     language = request.POST.get('report_language')
+    structure_level = request.POST.get('report_structure_level')
 
     request.session['report_language'] = language
+    request.session['report_structure_level'] = structure_level
 
-    report, error_message = generate_report_using_openai(note_list, language)
+    report, error_message = generate_report_using_openai(note_list, language, structure_level)
 
     if report:
         request.session['report'] = report
@@ -106,7 +110,7 @@ def generate_report(request, note_list_id):
     return redirect('get_note_list', note_list_id=note_list_id)
 
 
-def generate_report_using_openai(note_list, language):
+def generate_report_using_openai(note_list, language, structure_level):
     system_prompt = (
         'Generate a report based on the provided notes. '
         'The report should provide a high-level analysis, integrating the notes into a coherent narrative. '
@@ -117,6 +121,9 @@ def generate_report_using_openai(note_list, language):
         'The max heading level should be h3.'
         'You will receive the following parameters:\n'
         '- language: e.g. German, English, etc.\n'
+        '- structure_level: ranges from 1 to 5. '
+        '1 means highly unstructured, e.g. a casual conversation. '
+        '5 means highly structured, e.g. a mathematical proof, scientific paper or program code.\n'
         '- note_list_title\n'
         '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)\n'
     )
@@ -126,7 +133,8 @@ def generate_report_using_openai(note_list, language):
 
     user_prompt = \
         'Generate a report. ' \
-        f'language: {language}, note_list_title: {note_list.title}, notes_text: {notes_text}'
+        f'language: {language}, structure_level: {structure_level}, '\
+        f'note_list_title: {note_list.title}, notes_text: {notes_text}'
 
     return generate_openai_text(system_prompt, user_prompt)
 
