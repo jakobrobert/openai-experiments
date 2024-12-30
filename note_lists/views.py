@@ -90,11 +90,11 @@ def generate_notes(request, note_list_id):
 @require_POST
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
-    report_language = request.POST.get('report_language')
+    language = request.POST.get('report_language')
 
-    request.session['report_language'] = report_language
+    request.session['report_language'] = language
 
-    report, error_message = generate_report_using_openai(note_list, report_language)
+    report, error_message = generate_report_using_openai(note_list, language)
 
     if report:
         request.session['report'] = report
@@ -106,7 +106,7 @@ def generate_report(request, note_list_id):
     return redirect('get_note_list', note_list_id=note_list_id)
 
 
-def generate_report_using_openai(note_list, report_language):
+def generate_report_using_openai(note_list, language):
     system_prompt = (
         'Generate a report based on the provided notes. '
         'The report should provide a high-level analysis, integrating the notes into a coherent narrative. '
@@ -117,7 +117,7 @@ def generate_report_using_openai(note_list, report_language):
         'It should be well structured, e.g. it might provide several paragraphs and bold text, but NO headings. '
         'Detect the language used in the notes and use the same language for the report.\n'
         'You will receive the following parameters:\n'
-        '- report_language: e.g. German, English, etc.\n'
+        '- language: e.g. German, English, etc.\n'
         '- note_list_title\n'
         '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)\n'
     )
@@ -127,7 +127,7 @@ def generate_report_using_openai(note_list, report_language):
 
     user_prompt = \
         'Generate a report. ' \
-        f'report_language: {report_language}, note_list_title: {note_list.title}, notes_text: {notes_text}'
+        f'language: {language}, note_list_title: {note_list.title}, notes_text: {notes_text}'
 
     return generate_openai_text(system_prompt, user_prompt)
 
