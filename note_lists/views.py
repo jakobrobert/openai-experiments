@@ -24,6 +24,8 @@ def get_note_list(request, note_list_id):
 
     generate_notes_description = request.session.get('generate_notes_description', '')
     generate_notes_num_notes = request.session.get('generate_notes_num_notes', '1')
+    report_language = request.session.get('report_language', '')
+    report_analysis_level = request.session.get('report_analysis_level', '')
     report = request.session.pop('report', '')
     error_message = request.session.pop('error_message', '')
 
@@ -31,6 +33,8 @@ def get_note_list(request, note_list_id):
         'note_list': note_list,
         'generate_notes_description': generate_notes_description,
         'generate_notes_num_notes': generate_notes_num_notes,
+        'report_language': report_language,
+        'report_analysis_level': report_analysis_level,
         'report': report,
         'error_message': error_message
     }
@@ -88,8 +92,13 @@ def generate_notes(request, note_list_id):
 @require_POST
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
+    language = request.POST.get('report_language')
+    analysis_level = request.POST.get('report_analysis_level')
 
-    report, error_message = generate_report_using_openai(note_list)
+    request.session['report_language'] = language
+    request.session['report_analysis_level'] = analysis_level
+
+    report, error_message = generate_report_using_openai(note_list, language, analysis_level)
 
     if report:
         request.session['report'] = report
@@ -101,12 +110,20 @@ def generate_report(request, note_list_id):
     return redirect('get_note_list', note_list_id=note_list_id)
 
 
-def generate_report_using_openai(note_list):
+def generate_report_using_openai(note_list, language, analysis_level):
     system_prompt = (
-        'Generate a well-structured and concise report based on the provided notes.\n'
-        'Detect the language used in the notes and use the same language for the report.\n'
-        'The report should NOT contain the notes itself but should summarize the main points and give a conclusion.\n'
+        'Generate a report based on the provided notes. '
+        'The report should provide a high-level analysis, integrating the notes into a coherent narrative. '
+        'It should not simply repeat the notes verbatim, but rather synthesize and interpret the key insights. '
+        'Highlight any patterns, trends, or unique observations that emerge from the notes. '
+        'Do NOT include the note list title. '
+        'The output should be in HTML format and might contain several headings and paragraphs. '
+        'The max heading level should be h3.'
         'You will receive the following parameters:\n'
+        '- language: e.g. German, English, etc.\n'
+        '- analysis_level: ranges from 1 to 5. '
+        '1: low. basic summary, purely descriptive, no interpretation. '
+        '5: high. in-depth analysis with nuanced understanding, uncovering hidden patterns or meanings.\n'
         '- note_list_title\n'
         '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)\n'
     )
@@ -114,7 +131,10 @@ def generate_report_using_openai(note_list):
     notes = note_list.notes.all()
     notes_text = ','.join([f'(title: {note.title}, text: {note.text})' for note in notes])
 
-    user_prompt = f'Generate a report. note_list_title: {note_list.title}, notes_text: {notes_text}'
+    user_prompt = \
+        'Generate a report. ' \
+        f'language: {language}, analysis_level: {analysis_level}'\
+        f'note_list_title: {note_list.title}, notes_text: {notes_text}'
 
     return generate_openai_text(system_prompt, user_prompt)
 
