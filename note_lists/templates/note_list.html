@@ -46,6 +46,10 @@
     <h3>Generate Report</h3>
     <form action="{% url 'generate_report' note_list.id %}" method="post" class="mb-3">
         {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" for="report_language">Enter language:</label>
+            <input type="text" class="form-control" id="report_language" name="report_language" value="{{ report_language }}" required>
+        </div>
         <button type="submit" class="btn btn-primary">Generate</button>
     </form>
 

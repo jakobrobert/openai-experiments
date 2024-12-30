@@ -24,6 +24,7 @@ def get_note_list(request, note_list_id):
 
     generate_notes_description = request.session.get('generate_notes_description', '')
     generate_notes_num_notes = request.session.get('generate_notes_num_notes', '1')
+    report_language = request.session.get('report_language', '')
     report = request.session.pop('report', '')
     error_message = request.session.pop('error_message', '')
 
@@ -31,6 +32,7 @@ def get_note_list(request, note_list_id):
         'note_list': note_list,
         'generate_notes_description': generate_notes_description,
         'generate_notes_num_notes': generate_notes_num_notes,
+        'report_language': report_language,
         'report': report,
         'error_message': error_message
     }
@@ -88,8 +90,11 @@ def generate_notes(request, note_list_id):
 @require_POST
 def generate_report(request, note_list_id):
     note_list = get_object_or_404(NoteList, id=note_list_id)
+    report_language = request.POST.get('report_language')
 
-    report, error_message = generate_report_using_openai(note_list)
+    request.session['report_language'] = report_language
+
+    report, error_message = generate_report_using_openai(note_list, report_language)
 
     if report:
         request.session['report'] = report
@@ -101,7 +106,7 @@ def generate_report(request, note_list_id):
     return redirect('get_note_list', note_list_id=note_list_id)
 
 
-def generate_report_using_openai(note_list):
+def generate_report_using_openai(note_list, report_language):
     system_prompt = (
         'Generate a report based on the provided notes. '
         'The report should provide a high-level analysis, integrating the notes into a coherent narrative. '
@@ -112,6 +117,7 @@ def generate_report_using_openai(note_list):
         'It should be well structured, e.g. it might provide several paragraphs and bold text, but NO headings. '
         'Detect the language used in the notes and use the same language for the report.\n'
         'You will receive the following parameters:\n'
+        '- report_language: e.g. German, English, etc.\n'
         '- note_list_title\n'
         '- notes_text: A list of notes, each with a title and a text, formatted as (title: ..., text: ...)\n'
     )
@@ -119,7 +125,9 @@ def generate_report_using_openai(note_list):
     notes = note_list.notes.all()
     notes_text = ','.join([f'(title: {note.title}, text: {note.text})' for note in notes])
 
-    user_prompt = f'Generate a report. note_list_title: {note_list.title}, notes_text: {notes_text}'
+    user_prompt = \
+        'Generate a report. ' \
+        f'report_language: {report_language}, note_list_title: {note_list.title}, notes_text: {notes_text}'
 
     return generate_openai_text(system_prompt, user_prompt)
 
